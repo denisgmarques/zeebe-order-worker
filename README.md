@@ -1,7 +1,5 @@
 # Zeebe order demo
 
-## Zeebe client configuration
-
 When the project started the BPMN and DMN will be deployed on the Camunda Cloud.
 
 ## How to compile and run the application
