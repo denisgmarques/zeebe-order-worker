@@ -21,7 +21,7 @@ public class OrderSplitWorker {
     private static final String BRINDES = "Lembrancinhas/Brindes";
 
     @ZeebeWorker(type = "orderSplit")
-    public void handleOrder(final JobClient client, final ActivatedJob job) throws Exception {
+    public void handleOrder(final JobClient client, final ActivatedJob job) {
         try {
             final OrderDTO order = job.getVariablesAsType(OrderDTO.class);
 
@@ -37,7 +37,7 @@ public class OrderSplitWorker {
 
             client.newCompleteCommand(job.getKey()).variables(Map.of("newOrders", processOrders(order, itemsByCategory))).send();
 
-            log.info(order.getOrderId() + " splited!");
+            log.info(order.getOrderId() + " splitted!");
         } catch (Exception ex) {
             throw new ZeebeBpmnError("Error on order split worker", ex.getMessage());
         }
@@ -74,7 +74,6 @@ public class OrderSplitWorker {
                 orders.add(order);
             }
         });
-        //itemsByCategory.get(BRINDES).stream().map(x -> x.getPrice()).reduce(0d, Double::sum)
 
         return orders;
     }
@@ -93,10 +92,5 @@ public class OrderSplitWorker {
         items.add(newItem);
 
         return items;
-    }
-
-    @ZeebeWorker( type = "send-rejection", autoComplete = true)
-    public void sendRejection(final JobClient client, final ActivatedJob job) throws Exception {
-        // same thing as above, do data transformation and delegate to real business code / service
     }
 }

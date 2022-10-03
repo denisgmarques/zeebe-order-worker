@@ -1,7 +1,7 @@
 package br.com.denisgmarques.zeebe.worker;
 
 import br.com.denisgmarques.zeebe.dto.OrderDTO;
-import br.com.denisgmarques.zeebe.dto.SplitedOrderDTO;
+import br.com.denisgmarques.zeebe.dto.SplittedOrderDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.camunda.zeebe.client.api.response.ActivatedJob;
 import io.camunda.zeebe.client.api.worker.JobClient;
@@ -18,18 +18,13 @@ public class OrderProcessWorker {
     private ObjectMapper mapper;
 
     @ZeebeWorker(type = "orderProcess", fetchVariables = { "order" })
-    public void handleOrder(final JobClient client, final ActivatedJob job) throws Exception {
+    public void handleOrder(final JobClient client, final ActivatedJob job) {
         try {
-            // TODO Como fazer pra pegar só o valor da variável order? -> { order: { VALUE } }
-            final OrderDTO order = job.getVariablesAsType(SplitedOrderDTO.class).getOrder();
+            // TODO Como fazer pra pegar só o valor da variável sem ter o nome da variável na propriedade do JSON?
+            final OrderDTO order = job.getVariablesAsType(SplittedOrderDTO.class).getOrder();
             log.info(mapper.writeValueAsString(order));
         } catch (Exception ex) {
             throw new ZeebeBpmnError("Error on order process worker", ex.getMessage());
         }
-    }
-
-    @ZeebeWorker( type = "send-rejection", autoComplete = true)
-    public void sendRejection(final JobClient client, final ActivatedJob job) throws Exception {
-        // same thing as above, do data transformation and delegate to real business code / service
     }
 }

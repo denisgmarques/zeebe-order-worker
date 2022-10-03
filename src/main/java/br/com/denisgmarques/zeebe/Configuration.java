@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Bean;
 @EnableZeebeClient
 @SpringBootApplication
 //@ZeebeDeployment(resources = { "classpath*:/bpmn/**/*.bpmn", "classpath*:/bpmn/**/*.dmn" })
-@ZeebeDeployment(resources = { "classpath:/bpmn/categoria_pedido.dmn", "classpath:/bpmn/order-split.bpmn" })
+@ZeebeDeployment(resources = { "classpath:/bpmn/order-item-category.dmn", "classpath:/bpmn/order-split.bpmn" })
 public class Configuration {
 
 	public static void main(String[] args) {

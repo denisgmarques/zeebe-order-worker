@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 @Data
-public class SplitedOrderDTO {
+public class SplittedOrderDTO {
     @JsonProperty("order")
     private OrderDTO order;
 }
